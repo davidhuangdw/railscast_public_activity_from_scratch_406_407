@@ -4,7 +4,7 @@ class ActivitiesController < ApplicationController
   # GET /activities
   # GET /activities.json
   def index
-    @activities = Activity.includes(:trackable, :user).order('created_at desc')
+    @activities = Activity.includes(:user, recipe: :user, comment:{recipe: :user}).order('created_at desc')
 
     respond_to do |format|
       format.html # index.html.erb

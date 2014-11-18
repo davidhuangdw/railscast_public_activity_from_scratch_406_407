@@ -1,7 +1,7 @@
 %p
   =link_to activity.user.name, activity.user
   #{activity.action.sub(/e?$/,'ed')} a comment on
-  - recipe =  activity.try(:trackable).try(:recipe)
+  - recipe =  activity.try(:comment).try(:recipe)
   - if recipe
     = link_to recipe.user.name, recipe.user
     's recipe

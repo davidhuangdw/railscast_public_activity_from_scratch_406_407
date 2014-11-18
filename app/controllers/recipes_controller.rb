@@ -23,6 +23,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes/new
   def new
+    require_login
     @recipe = Recipe.new
   end
 
