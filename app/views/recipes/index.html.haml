@@ -1,0 +1,30 @@
+.page-header
+  = link_to new_recipe_path, :class => 'btn btn-primary' do
+    %span.glyphicon.glyphicon-plus
+    New Recipe
+  %h1 Listing recipes
+
+= render @recipes
+
+-#.table-responsive
+-#  %table.table.table-striped.table-bordered.table-hover
+-#    %thead
+-#      %tr
+-#        %th Name
+-#        %th Description
+-#        %th Image url
+-#        %th User
+-#        %th
+-#        %th
+-#        %th
+-#
+-#    %tbody
+-#      - @recipes.each do |recipe|
+-#        %tr
+-#          %td= recipe.name
+-#          %td= recipe.description
+-#          %td= recipe.image_url
+-#          %td= recipe.user
+-#          %td= link_to 'Show', recipe
+-#          %td= link_to 'Edit', edit_recipe_path(recipe)
+-#          %td= link_to 'Destroy', recipe, :data => { confirm: 'Are you sure?' }, :method => :delete

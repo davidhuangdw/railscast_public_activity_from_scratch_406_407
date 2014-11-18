@@ -1,0 +1,10 @@
+%h2= recipe.name
+%p
+  = link_to recipe.user.name, recipe.user
+  = link_to 'Show', recipe
+  = link_to 'Edit', edit_recipe_path(recipe)
+  = link_to 'Destroy', recipe, :data => { confirm: 'Are you sure?' }, :method => :delete
+%p
+  = link_to recipe do
+    = image_tag recipe.image_url
+%p= recipe.description

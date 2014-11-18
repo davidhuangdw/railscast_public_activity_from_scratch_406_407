@@ -1,0 +1,19 @@
+.page-header
+  = link_to recipes_path, :class => 'btn btn-default' do
+    %span.glyphicon.glyphicon-list-alt
+    Back
+  = link_to edit_recipe_path(@recipe), :class => 'btn btn-primary' do
+    %span.glyphicon.glyphicon-pencil
+    Edit
+  %h2= @recipe.name
+
+%p
+  Author:
+  = link_to @recipe.user.name, @recipe.user
+%p= image_tag @recipe.image_url
+%p= @recipe.description
+
+%h3 Comments
+- for comment in @recipe.comments
+  %p= link_to comment.user.name, comment.user
+  %p= comment.content
