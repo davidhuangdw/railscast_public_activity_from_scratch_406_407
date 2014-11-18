@@ -15,5 +15,14 @@
 
 %h3 Comments
 - for comment in @recipe.comments
-  %p= link_to comment.user.name, comment.user
-  %p= comment.content
+  .well
+    %p= link_to comment.user.name, comment.user
+    %p= comment.content
+
+- current_user.try do |user|
+  = simple_form_for @recipe.comments.build(user:user) do |f|
+    = f.error_notification
+    = f.input :recipe_id, as: :hidden
+    = f.input :user_id, as: :hidden
+    = f.input :content, label:'New Comment'
+    = f.submit 'Add Comment', class:'btn btn-primary'

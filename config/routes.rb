@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
+
   resources :comments
-
   resources :recipes
-
   resources :users
+  resources :sessions
+
+  get '/login' => 'sessions#new', as: :login
+  get '/logout' => 'sessions#destroy', as: :logout
+  get '/sign_up' => 'users#new', as: :sign_up
 
   root 'recipes#index'
 

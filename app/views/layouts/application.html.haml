@@ -28,11 +28,20 @@
         #navbar.collapse.navbar-collapse
           %ul.nav.navbar-nav
             %li.active
-              %a{:href => "#"} Home
+              %a{:href => "/"} Home
             %li
               %a{:href => "#about"} About
             %li
               %a{:href => "#contact"} Contact
+          %ul.nav.navbar-nav.navbar-right
+            - if current_user
+              %li=link_to "Profile #{current_user.name}", current_user
+              %li=link_to "Logout", logout_path
+            - else
+              %li=link_to 'Log In', login_path
+              %li=link_to 'Sign Up', sign_up_path
+
+
     .container
       - flash.each do |name, msg|
         = content_tag :div, :class => "alert alert-#{%w[alert error].include?(name.to_s) ? "danger" : "success" } alert-dismissable", :role => "alert" do
