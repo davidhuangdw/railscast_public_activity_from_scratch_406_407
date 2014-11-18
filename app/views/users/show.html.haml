@@ -7,6 +7,12 @@
     Edit
   %h1 Show user
 
+- if current_user && current_user != @user
+  - if current_user.friends.include?(@user)
+    = link_to 'Remove friend', current_user.friendships.find_by(friend_id:@user.id), method: :delete
+  - else
+    = link_to 'Add friend', friendships_path(friend_id:@user.id), method: :post
+
 %dl.dl-horizontal
   %dt Name:
   %dd= @user.name
