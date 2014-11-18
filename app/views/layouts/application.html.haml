@@ -29,10 +29,8 @@
           %ul.nav.navbar-nav
             %li.active
               %a{:href => "/"} Home
-            %li
-              %a{:href => "#about"} About
-            %li
-              %a{:href => "#contact"} Contact
+            %li= link_to 'Activities', activities_path
+            %li= link_to 'Friends\' activities', friend_activities_path
           %ul.nav.navbar-nav.navbar-right
             - if current_user
               %li=link_to "Profile #{current_user.name}", current_user

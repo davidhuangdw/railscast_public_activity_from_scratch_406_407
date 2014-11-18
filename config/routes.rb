@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
 
 
+  resources :friendships
   resources :comments
   resources :recipes
   resources :users
   resources :sessions
-  resources :activities
+  resources :activities do
+    get 'friend', on: :collection
+  end
 
   get '/login' => 'sessions#new', as: :login
   get '/logout' => 'sessions#destroy', as: :logout
