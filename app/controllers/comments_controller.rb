@@ -37,6 +37,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
+        track_activity @comment
         format.html { redirect_to @comment.recipe, notice: 'Comment was successfully created.' }
         format.json { render json: @comment, status: :created }
       else
@@ -51,6 +52,7 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       if @comment.update(comment_params)
+        track_activity @comment
         format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -65,6 +67,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
+      track_activity @comment
       format.html { redirect_to comments_url }
       format.json { head :no_content }
     end

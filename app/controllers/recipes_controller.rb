@@ -33,10 +33,12 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
-    @recipe = Recipe.new(recipe_params)
+    require_login
+    @recipe = current_user.recipes.build(recipe_params)
 
     respond_to do |format|
       if @recipe.save
+        track_activity @recipe
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
         format.json { render json: @recipe, status: :created }
       else
@@ -51,6 +53,7 @@ class RecipesController < ApplicationController
   def update
     respond_to do |format|
       if @recipe.update(recipe_params)
+        track_activity @recipe
         format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
         format.json { head :no_content }
       else
@@ -63,6 +66,7 @@ class RecipesController < ApplicationController
   # DELETE /recipes/1
   # DELETE /recipes/1.json
   def destroy
+    track_activity @recipe
     @recipe.destroy
     respond_to do |format|
       format.html { redirect_to recipes_url }
@@ -78,6 +82,6 @@ class RecipesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recipe_params
-      params.require(:recipe).permit(:name, :description, :image_url, :user_id)
+      params.require(:recipe).permit(:name, :description, :image_url)
     end
 end

@@ -1,0 +1,9 @@
+%p
+  =link_to activity.user.name, activity.user
+  #{activity.action.sub(/e?$/,'ed')}
+  - recipe =  activity.try(:trackable)
+  - if recipe
+    the recipe
+    = link_to recipe.name, recipe
+  - else
+    a recipe which has been removed.
