@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
 
+
   resources :comments
   resources :recipes
   resources :users
   resources :sessions
+  resources :activities
 
   get '/login' => 'sessions#new', as: :login
   get '/logout' => 'sessions#destroy', as: :logout

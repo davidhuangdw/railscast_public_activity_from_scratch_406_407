@@ -16,7 +16,10 @@
 %h3 Comments
 - for comment in @recipe.comments
   .well
-    %p= link_to comment.user.name, comment.user
+    %p
+      = link_to comment.user.name, comment.user
+      = time_ago_in_words(comment.updated_at)+ " ago"
+
     %p= comment.content
 
 - current_user.try do |user|

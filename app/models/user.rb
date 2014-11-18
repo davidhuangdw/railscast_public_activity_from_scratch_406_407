@@ -4,4 +4,7 @@ class User < ActiveRecord::Base
   validates_presence_of :password
 
   has_many :recipes
+  has_many :friendships
+  has_many :friends, through: :friendships
+
 end
