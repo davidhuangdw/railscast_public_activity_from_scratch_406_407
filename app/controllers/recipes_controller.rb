@@ -23,7 +23,8 @@ class RecipesController < ApplicationController
 
   # GET /recipes/new
   def new
-    @recipe = Recipe.new
+    redirect_to login_path,'Log in first.' unless current_user
+    @recipe = current_user.recipes.build
   end
 
   # GET /recipes/1/edit

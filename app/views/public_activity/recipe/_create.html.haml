@@ -1,11 +1,9 @@
 %p
   - activity.owner.try do |owner|
     = link_to owner.name, owner
-  added a comment to
-  - recipe = activity.comment.recipe
+  created a recipe
+  - recipe = activity.recipe
   - if recipe
-    = link_to recipe.user.name, recipe.user
-    's recipe
     = link_to recipe.name, recipe
   - else
     which has been removed

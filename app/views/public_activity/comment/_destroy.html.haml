@@ -2,7 +2,7 @@
   - activity.owner.try do |owner|
     = link_to owner.name, owner
   destroyed his comment to recipe
-  - recipe = activity.trackable.recipe
+  - recipe = activity.comment.recipe
   - if recipe
     = link_to recipe.user.name, recipe.user
     's recipe
