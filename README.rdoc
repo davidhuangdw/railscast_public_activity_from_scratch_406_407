@@ -1,28 +1,78 @@
-== README
+### preload a polymorphic column's nested associations
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+        class Activity < PublicActivity::Activity
+          belongs_to :trackable, polymorphic: true
 
-Things you may want to cover:
+          # preload, but more than need (I can't find a way to inner join -- none works e.g. joins(...).select(..), includes(...).references(...)
+          belongs_to :comment, foreign_key: :trackable_id
+          belongs_to :recipe, foreign_key: :trackable_id
 
-* Ruby version
+        end
 
-* System dependencies
+        # preload query
+        @activities = Activity.includes(:user, recipe: :user, comment:{recipe: :user}).order('created_at desc')
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+        # views/public_activity/comment/_create.html.haml
+        ...
+        - comment = activity.comment        # don't use activity.trackable!! otherwise query again!!
+        ...
+        # public_activity/recipe/_create.html.haml
+        ...
+        - recipe = activity.recipe
+        ...
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+
+
+### public Activity
+
+        gem 'public_activity'
+        rails g public_activity:migration
+        rake db:migrate
+
+        # table: PublicActivity::Activity
+        auto added columns:
+        trackable(id, type)
+        key
+        other columns:
+        owner(id,type), recipient(id, type)
+
+        # how to track: 'tracked' callback, or 'PublicActivity::Commn#create_activity'
+        class Comment
+          include PublicActivity::Model
+          tracked                           # don't have 'owner' & 'recipient'
+          tracked owner: ->(controller,model){ controller.current_user }
+          tracked owner: :user
+          tracked except: :update, ...      # ignore a few actions
+        end
+        # use 'create_activity'
+        class Comment
+          include PublicActivity::Common
+        end
+        def create
+          if @comment.save
+            @comment.create_activity :create, owner:@comment.user
+            ...
+        end
+
+        # 'render_activity'
+        rails g controller activities index
+        # activities_controller.rb
+        def index
+          @activities = PublicActivity::Activity.order('created_at desc')
+        end
+        # views/activities/index.html.haml
+        render_activity @activities
+        # views/public_activity/comment/_create.html.haml
+        %p
+          - activity.owner.try do |owner|
+            = link_to owner.name, owner
+          added a comment to
+          - recipe = activity.trackable.recipe
+          - if recipe
+            = link_to recipe.user.name, recipe.user
+            's recipe
+            = link_to recipe.name, recipe
+          - else
+            which has been removed
+
